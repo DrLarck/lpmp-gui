@@ -5,6 +5,7 @@ SRC="src"
 BIN="bin"
 MAIN="$SRC/main.py"
 target_name="lpmp-gui"
+target_path="$BIN/$target_name"
 
 # color
 blue="\033[1;34m"
@@ -47,4 +48,15 @@ function build_exec() {
     done_message
 }
 
-build_exec
+function build_and_run() {
+    build_exec
+    init_message "running" "$target_name"
+    echo -e "\n"
+
+    ./$target_path
+
+    echo -e "\n"
+    done_message
+}
+
+build_and_run
