@@ -1,4 +1,4 @@
-#!bin/bash
+#!/usr/bin/bash
 directories=("bin")
 
 for dir in "${directories[@]}"
