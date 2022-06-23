@@ -1,5 +1,8 @@
 #!/usr/bin/bash
-directories=("bin")
+directories=(
+    "bin"
+    "data"
+)
 
 for dir in "${directories[@]}"
 do
