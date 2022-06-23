@@ -7,3 +7,12 @@ class NoProcessToRun(Exception):
             exception_message = message
         
         super().__init__(exception_message)
+
+class NoMoreProcessToRun(Exception):
+
+    def __init__(self, message=None):
+        exception_message = "No more process to run."
+        if message is not None:
+            exception_message = message
+        
+        super().__init__(exception_message)
