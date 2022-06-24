@@ -3,7 +3,7 @@
 # const
 SRC="src"
 BIN="bin"
-MAIN="$SRC/main.py"
+MAIN="$SRC/__init__.py"
 target_name="lpmp-gui"
 target_path="$BIN/$target_name"
 
