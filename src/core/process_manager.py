@@ -1,6 +1,7 @@
 
 import subprocess
 from typing import List
+from threading import Thread
 
 from .process import Process
 from .process_status import ProcessStatus
@@ -33,7 +34,6 @@ class ProcessManager:
             process_status.set_status(True)
 
         if result is not None:
-            result.clear()
             result.append(process_status)
 
         return process_status
@@ -45,17 +45,46 @@ class ProcessManager:
 
         Arguments:
         processes -- the sequence of processes to execute synchronously
-        [Optional] result -- the result list that will hold the result of the process if run through a thread"""
+        [Optional] result -- the result list that will hold the result of the processes if run through a thread"""
 
         processes_status: List[ProcessStatus] = []
         for process in processes:
             processes_status.append(self.run(process))
 
         if result is not None:
-            result.clear()
             for status in processes_status:
                 result.append(status)
 
+        return processes_status
+
+    def run_threaded(self,
+                     processes: List[Process],
+                     result: List[ProcessStatus]=None) -> List[ProcessStatus]:
+        """Runs a sequence of processes, each process is ran into a separate thread
+
+        Arguments:
+        processes -- the sequence of process to run
+        [Optional] result -- the result list that will hold the result of the processes if run through a thread"""
+
+        processes_status: List[ProcessStatus] = []
+        processes_threaded: List[Thread] = []
+
+        for process in processes:
+            processes_threaded.append(Thread(
+                target=self.run,
+                args=(process, processes_status)
+            ))
+        
+        for thread in processes_threaded:
+            thread.start()
+        
+        for thread in processes_threaded:
+            thread.join()
+
+        if result is not None:
+            for status in processes_status:
+                result.append(status)
+        
         return processes_status
 
     def __full_command(self, process: Process) -> [str]:
