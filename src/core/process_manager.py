@@ -1,5 +1,6 @@
 
 import subprocess
+from typing import List
 
 from .process import Process
 from .process_status import ProcessStatus
@@ -14,7 +15,7 @@ class ProcessManager:
 
         Argument:
         process -- the process to run
-        [Optional] result -- the result list that will hold the result of the process"""
+        [Optional] result -- the result list that will hold the result of the process if run through a thread"""
 
         # creates the process status to return
         process_status = ProcessStatus(
@@ -33,7 +34,7 @@ class ProcessManager:
 
         if result is not None:
             result.clear()
-            result[0] = process_status
+            result.append(process_status)
 
         return process_status
 
@@ -44,7 +45,7 @@ class ProcessManager:
 
         Arguments:
         processes -- the sequence of processes to execute synchronously
-        [Optional] result -- the result list that will hold the result of the process"""
+        [Optional] result -- the result list that will hold the result of the process if run through a thread"""
 
         processes_status: List[ProcessStatus] = []
         for process in processes:
